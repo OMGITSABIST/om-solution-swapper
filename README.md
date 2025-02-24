@@ -3,7 +3,7 @@ by [panic](https://github.com/ianh)\
 with very bad edits by omgitsabist
 
 dependant on [omsim](https://github.com/ianh/omsim)\
-works best with files downloaded from admin pages from http://events.critelli.technology/
+works best with files downloaded from admin pages of http://events.critelli.technology/
 
 at start, measures the Primary(), Secondary() and Tertiary() metrics for each solution in the SOLUTIONS folder, then copies the worst one into the GAMEFILES folder
 
