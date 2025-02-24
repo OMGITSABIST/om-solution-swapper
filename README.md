@@ -1,5 +1,5 @@
 ; om solution swapper\
-; by panic\
+; by [panic](https://github.com/ianh)\
 ; with very bad edits by omgitsabist
 
 ; at start, measures the Primary(), Secondary() and Tertiary() metrics for each solution in the SOLUTIONS folder, then copies the worst one into the GAMEFILES folder
