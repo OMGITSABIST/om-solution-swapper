@@ -2,7 +2,8 @@ om solution swapper\
 by [panic](https://github.com/ianh)\
 with very bad edits by omgitsabist
 
-dependant on [omsim](https://github.com/ianh/omsim)
+dependant on [omsim](https://github.com/ianh/omsim)\
+works best with files downloaded from admin pages from http://events.critelli.technology/
 
 at start, measures the Primary(), Secondary() and Tertiary() metrics for each solution in the SOLUTIONS folder, then copies the worst one into the GAMEFILES folder
 
@@ -15,3 +16,6 @@ double-clicking a solution in the list will swap in that one
 
 for multiple metrics, i recommend making multiple copies of this script --\
 after finishing one metric, close the script for it and open the script for the next one
+
+simulator version runs libverify to parse metrics\
+csvreader version reads directly from a csv file
