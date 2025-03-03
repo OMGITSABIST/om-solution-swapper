@@ -74,6 +74,7 @@ n_tertiary := ""
 #Warn
 #SingleInstance force
 SendMode Input
+FileEncoding, UTF-8
 placed := ""
 row := 1
 activeRow := -1
