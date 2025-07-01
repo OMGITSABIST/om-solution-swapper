@@ -317,8 +317,11 @@ def get_metadata():
     primary = table.GetItem(current_solution, TABLE_COLUMNS.index("Primary")).GetText()
     secondary = table.GetItem(current_solution, TABLE_COLUMNS.index("Secondary")).GetText()
     tertiary = table.GetItem(current_solution, TABLE_COLUMNS.index("Tertiary")).GetText()
+    superseded = table.GetItem(current_solution, TABLE_COLUMNS.index("Superseded")).GetText()
 
-    if placement == "":
+    if superseded == "h":
+        metadata = submitter
+    elif placement == "":
         metadata = submitter + "*"
     else:
         metadata = "#" + placement + " " + submitter
