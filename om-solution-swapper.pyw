@@ -18,8 +18,9 @@
 # pynput - for input detection (https://pynput.readthedocs.io/en/latest/)
 # wxpython - for gui (https://wxpython.org/index.html)
 
-# this parser also requires om.py to be in the same directory as this script
-# (you can download it here at http://critelli.technology/om.py)
+# this parser also requires om.py and libverify to be in the same directory as this script
+# you can download om.py here at http://critelli.technology/om.py
+# and libverify here https://github.com/ianh/omsim/releases
 
 # the game's solutions folder
 GAMEFILES = r"path\to\game\solutions\folder"
