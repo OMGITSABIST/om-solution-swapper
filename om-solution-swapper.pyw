@@ -12,16 +12,17 @@
 # for multiple metrics, i recommend making multiple copies of this script
 # after finishing one metric, close the script for it and open the script for the next one
 
-# ---------- SETUP ----------
+# all external libraries and files should automatically download and install
+# but in case they don't you can find them here:
 
-# this script requires two external python libraries
 # wxpython - for gui (https://wxpython.org/index.html)
 # pynput - for input detection (https://pypi.org/project/pynput/)
+# om.py - omsim python package (http://critelli.technology/om.py)
+# libverify - opus magnum simulator (https://github.com/ianh/omsim/releases)
+
 # pynput has certain limitations on different operating systems that you can find out about here https://pynput.readthedocs.io/en/latest/limitations.html
 
-# this parser also requires om.py and libverify to be in the same directory as this script
-# you can download om.py here at http://critelli.technology/om.py
-# and libverify here https://github.com/ianh/omsim/releases
+# ---------- SETUP ----------
 
 # the game's solutions folder
 GAMEFILES = r"path\to\game\solutions\folder"
@@ -93,9 +94,45 @@ def ScoreFormula(index):
 import os
 import shutil
 import csv
-import wx
-import pynput
-import om
+import urllib.request
+import platform
+
+if not os.path.exists("libverify.dll"):
+    download_url = None
+    if platform.system() == 'Windows':
+        libverify = 'libverify.dll'
+        if platform.machine().lower() == 'x86_64' or platform.machine().lower() == 'amd64':
+            url = 'https://github.com/ianh/omsim/releases/download/libverify-windows-x86_64/libverify.dll'
+    elif platform.system() == 'Linux':
+        libverify = 'libverify.so'
+        if platform.machine().lower() == 'x86_64':
+            url = 'https://github.com/ianh/omsim/releases/download/libverify-linux-x86_64/libverify.so'
+    else:
+        libverify = 'libverify.so'
+        
+    urllib.request.urlretrieve(download_url, libverify)
+
+try:
+    import om
+except:
+    url = "http://critelli.technology/om.py"
+    filepath = "om.py"
+    urllib.request.urlretrieve(url, filepath)
+    import om
+
+try:
+    import wx
+except:
+    os.system("py -m pip install wxpython")
+    os.system("python -m pip install wxpython")
+    import wx
+
+try:
+    import pynput
+except:
+    os.system("py -m pip install pynput")
+    os.system("python -m pip install pynput")
+    import pynput
 
 TABLE_COLUMNS = ["#", "Primary", "Secondary", "Tertiary", "Supplement", "Superseded", "Current", "Submitter", "Pronouns", "Name", "File Name", "Timestamp", "Error"]
 
