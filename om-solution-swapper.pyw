@@ -501,7 +501,6 @@ class Solutions(wx.Frame):
 
         global table
 
-        self.SetInitialSize(wx.Size(1000, 590))
         self.Bind(wx.EVT_CLOSE, self.on_close)
         table = create_table(self, data_list)
 
@@ -525,13 +524,12 @@ class Notes(wx.Frame):
         # ensure the parent's __init__ is called
         super(Notes, self).__init__(*args, **kw)
 
-        self.SetInitialSize(wx.Size(600, 500))
         self.Bind(wx.EVT_CLOSE, self.on_notes_close)
         self.panel = wx.Panel(self)
-        self.text = wx.TextCtrl(self.panel, style=wx.TE_READONLY | wx.TE_MULTILINE, size=self.GetSize())
-        sizer = wx.BoxSizer()
-        sizer.Add(self.text, wx.SizerFlags().Border(wx.TOP | wx.BOTTOM | wx.LEFT | wx.RIGHT, 10))
-        self.panel.SetSizer(sizer)
+        self.text = wx.TextCtrl(self.panel, style=wx.TE_READONLY | wx.TE_MULTILINE)
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        vbox.Add(self.text, wx.SizerFlags().Border(wx.ALL, 5).Expand().Proportion(1))
+        self.panel.SetSizer(vbox)
 
         self.SetBackgroundColour(wx.Colour(255, 255, 255, 255))
 
@@ -554,10 +552,10 @@ if __name__ == "__main__":
     app = wx.App()
 
     metric_name = METRIC_1 + METRIC_2 + METRIC_3
-    solution_frm = Solutions(None, title="OM Solution Swapper - " + om.Puzzle(PUZZLE).name.decode("utf-8") + " " + metric_name.upper())
+    solution_frm = Solutions(None, title="OM Solution Swapper - " + om.Puzzle(PUZZLE).name.decode("utf-8") + " " + metric_name.upper(), size=wx.Size(1000, 590))
     solution_frm.Show()
 
-    notes_frm = Notes(None, title="Notes", pos=wx.Point(1010, 0) + solution_frm.GetPosition())
+    notes_frm = Notes(None, title="Notes", pos=wx.Point(1010, 0) + solution_frm.GetPosition(), size=wx.Size(600, 500))
     notes_frm.Show()
 
     set_focus(0)
