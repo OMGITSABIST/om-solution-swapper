@@ -5,8 +5,8 @@
 # F8 goes back to the next worst solution
 # F9 swaps the current solution out for the next best solution
 # F10 updates the metrics overlay
-# F11 repopulates past solves overlay with all non superceded solves in selection (TBA)
-# F12 repopulates past solves overlay with all solves in selection (TBA)
+# F11 repopulates past solves overlay with all non superceded solves in selection
+# F12 repopulates past solves overlay with all solves in selection
 # double-clicking a solution in the list will swap in that one
 
 # for multiple metrics, i recommend making multiple copies of this script
@@ -321,6 +321,10 @@ def on_release(key):
         next_solution()
     if key == pynput.keyboard.Key.f10:
         update_metadata()
+    if key == pynput.keyboard.Key.f11:
+        repopulate()
+    if key == pynput.keyboard.Key.f12:
+        repopulate(True)
 
 def prev_solution():
     global current_solution
@@ -386,9 +390,9 @@ def update_metadata():
         file.write(metadata)
         if current_solution not in seen_solutions:
             seen_solutions.append(current_solution)
-            seen_solutions = sorted(seen_solutions, reverse=True)
 
     with open(PAST, "w") as file:
+        seen_solutions = sorted(seen_solutions, reverse=True)
         for i in seen_solutions:
             placement = table.GetItem(i, TABLE_COLUMNS.index("#")).GetText()
             submitter = table.GetItem(i, TABLE_COLUMNS.index("Submitter")).GetText()
@@ -418,6 +422,15 @@ def update_notes():
             notes_frm.set_text(content)
     else:
         notes_frm.set_text(metadata)
+
+def repopulate(include_superseded=False):
+    selected = table.GetFirstSelected()
+    while selected != -1:
+        if include_superseded or table.GetItem(selected, TABLE_COLUMNS.index("Superseded")).GetText() != "x":
+            if selected not in seen_solutions:
+                seen_solutions.append(selected)
+        selected = table.GetNextSelected(selected)
+    update_metadata()
 
 
 def create_table(frm, data_list):
