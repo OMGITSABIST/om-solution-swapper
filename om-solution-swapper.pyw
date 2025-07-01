@@ -107,6 +107,7 @@ error = ""
 notes_frm: wx.Frame = None
 
 def M(metric):
+    global error
     if metric == "default restrictions":
         default = M("overlap")
         default += max(0, M("parts of type baron - 1"))
@@ -126,12 +127,16 @@ def M(metric):
                 error = err.message
                 return -1
     if isinstance(metric, int):
-        global csv_data
-        global solution_key
-        try:
-            return int(csv_data[solution_key][metric-1])
-        except:
-            return csv_data[solution_key][metric-1]
+        if metric in range(1, 7):
+            global csv_data
+            global solution_key
+            try:
+                return int(csv_data[solution_key][metric-1])
+            except:
+                return csv_data[solution_key][metric-1]
+        else:
+            error = "metric number out of range (1-6)"
+            return -1
 
 def read_data():
     global csv_data
@@ -183,6 +188,7 @@ def load_solutions(csv_data):
             data["Supplement"] = Supplement()
             global error
             data["Error"] = error
+            error = ""
 
             data_list.append(data)
 
