@@ -110,7 +110,7 @@ if not os.path.exists("libverify.dll"):
     else:
         libverify = 'libverify.so'
         
-    urllib.request.urlretrieve(download_url, libverify)
+    urllib.request.urlretrieve(url, libverify)
 
 try:
     import om
