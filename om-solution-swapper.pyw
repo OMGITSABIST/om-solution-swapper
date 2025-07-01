@@ -502,7 +502,7 @@ if __name__ == "__main__":
     solution_frm = Solutions(None, title="OM Solution Swapper - " + om.Puzzle(PUZZLE).name.decode("utf-8") + " " + metric_name.upper())
     solution_frm.Show()
 
-    notes_frm = Notes(None, title="Notes")
+    notes_frm = Notes(None, title="Notes", pos=wx.Point(1010, 0) + solution_frm.GetPosition())
     notes_frm.Show()
 
     set_focus(0)
