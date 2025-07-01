@@ -123,7 +123,6 @@ def M(metric):
             try:
                 return sim.approximate_metric(metric)
             except om.SimError as err:
-                global error
                 error = err.message
                 return -1
     if isinstance(metric, int):
