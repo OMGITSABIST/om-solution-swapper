@@ -265,7 +265,7 @@ def parse_solutions(data_list):
             data["Superseded"] = 'x'
             continue
 
-        if submitter in HOSTS:
+        if submitter in HOSTS and data["Superseded"] != 'x':
             data["Superseded"] = 'h'
         
         if previous_metrics == (primary, secondary, tertiary):
