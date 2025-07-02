@@ -97,20 +97,17 @@ import csv
 import urllib.request
 import platform
 
-if not os.path.exists("libverify.dll"):
-    download_url = None
-    if platform.system() == 'Windows':
-        libverify = 'libverify.dll'
-        if platform.machine().lower() == 'x86_64' or platform.machine().lower() == 'amd64':
-            url = 'https://github.com/ianh/omsim/releases/download/libverify-windows-x86_64/libverify.dll'
-    elif platform.system() == 'Linux':
-        libverify = 'libverify.so'
-        if platform.machine().lower() == 'x86_64':
-            url = 'https://github.com/ianh/omsim/releases/download/libverify-linux-x86_64/libverify.so'
-    else:
-        libverify = 'libverify.so'
-        
-    urllib.request.urlretrieve(url, libverify)
+url = None
+if platform.system() == 'Windows' and not os.path.exists("libverify.dll"):
+    libverify = 'libverify.dll'
+    if platform.machine().lower() == 'x86_64' or platform.machine().lower() == 'amd64':
+        url = 'https://github.com/ianh/omsim/releases/download/libverify-windows-x86_64/libverify.dll'
+        urllib.request.urlretrieve(url, libverify)
+elif platform.system() == 'Linux'and not os.path.exists("libverify.so"):
+    libverify = 'libverify.so'
+    if platform.machine().lower() == 'x86_64':
+        url = 'https://github.com/ianh/omsim/releases/download/libverify-linux-x86_64/libverify.so'
+        urllib.request.urlretrieve(url, libverify)
 
 try:
     import om
