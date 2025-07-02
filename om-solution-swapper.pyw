@@ -376,7 +376,7 @@ def get_metadata():
     if tertiary != "":
         metadata += "/" + tertiary + METRIC_3
 
-    metadata += supplement
+    metadata += " " + supplement
 
     return metadata
 
