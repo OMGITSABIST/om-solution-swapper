@@ -97,39 +97,61 @@ import csv
 import urllib.request
 import platform
 
-url = None
-if platform.system() == 'Windows' and not os.path.exists("libverify.dll"):
-    libverify = 'libverify.dll'
-    if platform.machine().lower() == 'x86_64' or platform.machine().lower() == 'amd64':
-        url = 'https://github.com/ianh/omsim/releases/download/libverify-windows-x86_64/libverify.dll'
-        urllib.request.urlretrieve(url, libverify)
-elif platform.system() == 'Linux'and not os.path.exists("libverify.so"):
-    libverify = 'libverify.so'
-    if platform.machine().lower() == 'x86_64':
-        url = 'https://github.com/ianh/omsim/releases/download/libverify-linux-x86_64/libverify.so'
-        urllib.request.urlretrieve(url, libverify)
+def error_window(content):
+    app = wx.App()
+
+    error_frm = ErrorFrame(None, size=wx.Size(400, 200))
+    error_frm.set_text(str(content))
+    error_frm.Show()
+
+    app.MainLoop()
+
+try:
+    url = None
+    if platform.system() == 'Windows' and not os.path.exists("libverify.dll"):
+        libverify = 'libverify.dll'
+        if platform.machine().lower() == 'x86_64' or platform.machine().lower() == 'amd64':
+            url = 'https://github.com/ianh/omsim/releases/download/libverify-windows-x86_64/libverify.dll'
+            urllib.request.urlretrieve(url, libverify)
+    elif platform.system() == 'Linux'and not os.path.exists("libverify.so"):
+        libverify = 'libverify.so'
+        if platform.machine().lower() == 'x86_64':
+            url = 'https://github.com/ianh/omsim/releases/download/libverify-linux-x86_64/libverify.so'
+            urllib.request.urlretrieve(url, libverify)
+except Exception as e:
+    error_window(str(e))
 
 try:
     import om
 except:
-    url = "http://critelli.technology/om.py"
-    filepath = "om.py"
-    urllib.request.urlretrieve(url, filepath)
-    import om
+    try:
+        url = "http://critelli.technology/om.py"
+        filepath = "om.py"
+        urllib.request.urlretrieve(url, filepath)
+        import om
+    except Exception as e:
+        error_window(str(e))
 
 try:
     import wx
 except:
-    os.system("py -m pip install wxpython")
-    os.system("python -m pip install wxpython")
-    import wx
+    try:
+        os.system("py -m pip install wxpython")
+        os.system("python -m pip install wxpython")
+        import wx
+    except Exception as e:
+        error_window(str(e))
 
 try:
     import pynput
 except:
-    os.system("py -m pip install pynput")
-    os.system("python -m pip install pynput")
-    import pynput
+    try:
+        os.system("py -m pip install pynput")
+        os.system("python -m pip install pynput")
+        import pynput
+    except:
+        error_window(str(e))
+
 
 TABLE_COLUMNS = ["#", "Primary", "Secondary", "Tertiary", "Supplement", "Superseded", "Current", "Submitter", "Pronouns", "Name", "File Name", "Timestamp", "Error"]
 
@@ -265,7 +287,7 @@ def parse_solutions(data_list):
             data["Superseded"] = 'x'
             continue
 
-        if submitter in HOSTS and data["Superseded"] != 'x':
+        if submitter in HOSTS:
             data["Superseded"] = 'h'
         
         if previous_metrics == (primary, secondary, tertiary):
@@ -356,7 +378,6 @@ def get_metadata():
     secondary = table.GetItem(current_solution, TABLE_COLUMNS.index("Secondary")).GetText()
     tertiary = table.GetItem(current_solution, TABLE_COLUMNS.index("Tertiary")).GetText()
     superseded = table.GetItem(current_solution, TABLE_COLUMNS.index("Superseded")).GetText()
-    supplement = table.GetItem(current_solution, TABLE_COLUMNS.index("Supplement")).GetText()
 
     if superseded == "h":
         metadata = submitter
@@ -375,8 +396,6 @@ def get_metadata():
         metadata += "/" + secondary + METRIC_2
     if tertiary != "":
         metadata += "/" + tertiary + METRIC_3
-
-    metadata += " " + supplement
 
     return metadata
 
@@ -541,26 +560,65 @@ class Notes(wx.Frame):
     def on_notes_close(self, event):
         self.Hide()
 
+class ErrorFrame(wx.Frame):
+    text: wx.TextCtrl = None
+    panel: wx.Panel = None
+    def __init__(self, *args, **kw):
+        # ensure the parent's __init__ is called
+        super(ErrorFrame, self).__init__(*args, **kw)
+
+        self.Bind(wx.EVT_CLOSE, self.on_notes_close)
+        self.panel = wx.Panel(self)
+        self.text = wx.TextCtrl(self.panel, style=wx.TE_READONLY | wx.TE_MULTILINE)
+        vbox = wx.BoxSizer(wx.VERTICAL)
+        vbox.Add(self.text, wx.SizerFlags().Border(wx.ALL, 5).Expand().Proportion(1))
+        self.panel.SetSizer(vbox)
+
+        self.SetBackgroundColour(wx.Colour(255, 255, 255, 255))
+
+    def set_text(self, content):
+        self.text.SetLabel("")
+        self.text.write(content)
+        self.text.ShowPosition(0)
+        
+    def on_notes_close(self, event):
+        try:
+            old_solution = os.path.join(GAMEFILES, table.GetItem(current_solution, TABLE_COLUMNS.index("File Name")).GetText())
+            if os.path.isfile(old_solution):
+                os.remove(old_solution)
+            
+            with open(METADATA, "w") as file:
+                file.write("")
+
+            with open(PAST, "w") as file:
+                file.write("")
+        finally:
+            exit()
+
 if __name__ == "__main__":
-    csv_data = read_data()
-    data_list = load_solutions(csv_data)
-    data_list = parse_solutions(data_list)
+    try:
+        csv_data = read_data()
+        data_list = load_solutions(csv_data)
+        data_list = parse_solutions(data_list)
 
-    listener = pynput.keyboard.Listener(on_release=on_release)
-    listener.start()
+        listener = pynput.keyboard.Listener(on_release=on_release)
+        listener.start()
 
-    app = wx.App()
+        app = wx.App()
 
-    metric_name = METRIC_1 + METRIC_2 + METRIC_3
-    solution_frm = Solutions(None, title="OM Solution Swapper - " + om.Puzzle(PUZZLE).name.decode("utf-8") + " " + metric_name.upper(), size=wx.Size(1000, 590))
-    solution_frm.Show()
+        metric_name = METRIC_1 + METRIC_2 + METRIC_3
+        solution_frm = Solutions(None, title="OM Solution Swapper - " + om.Puzzle(PUZZLE).name.decode("utf-8") + " " + metric_name.upper(), size=wx.Size(1000, 590))
+        solution_frm.Show()
 
-    notes_frm = Notes(None, title="Notes", pos=wx.Point(1010, 0) + solution_frm.GetPosition(), size=wx.Size(600, 500))
-    notes_frm.Show()
+        notes_frm = Notes(None, title="Notes", pos=wx.Point(1010, 0) + solution_frm.GetPosition(), size=wx.Size(600, 500))
+        notes_frm.Show()
 
-    set_focus(0)
-    if table.GetItemText(current_solution, TABLE_COLUMNS.index("Superseded")) == "x":
-        next_solution()
-    write_csv()
-    
-    app.MainLoop()
+        set_focus(0)
+        if table.GetItemText(current_solution, TABLE_COLUMNS.index("Superseded")) == "x":
+            next_solution()
+        write_csv()
+        
+        app.MainLoop()
+
+    except Exception as e:
+        error_window(str(e))
