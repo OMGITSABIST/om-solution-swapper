@@ -239,13 +239,13 @@ def load_solutions(csv_data):
             data["Name"] = om.Solution(os.path.join(SOLUTIONS, filename)).name.decode("utf-8")
             data["Timestamp"] = timestamp
 
+            global error
+            error = ""
             data["Primary"] = Primary()
             data["Secondary"] = Secondary()
             data["Tertiary"] = Tertiary()
             data["Supplement"] = Supplement()
-            global error
             data["Error"] = error
-            error = ""
 
             data_list.append(data)
 
