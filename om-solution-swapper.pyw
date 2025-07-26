@@ -149,7 +149,7 @@ except:
         os.system("py -m pip install pynput")
         os.system("python -m pip install pynput")
         import pynput
-    except:
+    except Exception as e:
         error_window(str(e))
 
 
@@ -334,16 +334,19 @@ def place_solution(index):
 
 
 def on_release(key):
-    if key == pynput.keyboard.Key.f8:
-        prev_solution()
-    if key == pynput.keyboard.Key.f9:
-        next_solution()
-    if key == pynput.keyboard.Key.f10:
-        update_metadata()
-    if key == pynput.keyboard.Key.f11:
-        repopulate()
-    if key == pynput.keyboard.Key.f12:
-        repopulate(True)
+    try:
+        if key == pynput.keyboard.Key.f8:
+            prev_solution()
+        if key == pynput.keyboard.Key.f9:
+            next_solution()
+        if key == pynput.keyboard.Key.f10:
+            update_metadata()
+        if key == pynput.keyboard.Key.f11:
+            repopulate()
+        if key == pynput.keyboard.Key.f12:
+            repopulate(True)
+    except Exception as e:
+        error_window(str(e))
 
 def prev_solution():
     global current_solution
