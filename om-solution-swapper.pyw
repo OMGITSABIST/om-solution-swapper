@@ -403,14 +403,14 @@ def update_metadata():
     global seen_solutions
     global current_solution
 
-    with open(METADATA, "w") as file:
+    with open(METADATA, "w", encoding="utf-8") as file:
         metadata = get_metadata()
 
         file.write(metadata)
         if current_solution not in seen_solutions:
             seen_solutions.append(current_solution)
 
-    with open(PAST, "w") as file:
+    with open(PAST, "w", encoding="utf-8") as file:
         seen_solutions = sorted(seen_solutions, reverse=True)
         for i in seen_solutions:
             placement = table.GetItem(i, TABLE_COLUMNS.index("#")).GetText()
@@ -489,7 +489,7 @@ def create_table(frm, data_list):
 
 def write_csv():
     if os.path.exists(CSV):
-        with open(CSV, "w", newline='') as file:
+        with open(CSV, "w", newline='', encoding="utf-8") as file:
             writer = csv.writer(file, delimiter=',')
             writer.writerow(["#", "Username", "Score", NAME_1, NAME_2, NAME_3, "Solution Name", "Notes"])
 
