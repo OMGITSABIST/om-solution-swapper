@@ -381,6 +381,7 @@ def get_metadata():
     secondary = table.GetItem(current_solution, TABLE_COLUMNS.index("Secondary")).GetText()
     tertiary = table.GetItem(current_solution, TABLE_COLUMNS.index("Tertiary")).GetText()
     superseded = table.GetItem(current_solution, TABLE_COLUMNS.index("Superseded")).GetText()
+    supplement = table.GetItem(current_solution, TABLE_COLUMNS.index("Supplement")).GetText()
 
     if superseded == "h":
         metadata = submitter
@@ -399,6 +400,9 @@ def get_metadata():
         metadata += "/" + secondary + METRIC_2
     if tertiary != "":
         metadata += "/" + tertiary + METRIC_3
+
+    if supplement != "":
+        metadata += " (" + supplement + ")"
 
     return metadata
 
