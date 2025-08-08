@@ -202,11 +202,12 @@ def read_data():
         reader = csv.reader(file)
         for line in reader:
             data = {}
-            submitter_timestamp = line[0] + line[12]
+            timestamp = line[12]
+            data["Submitter"] = line[0]
             data["Pronouns"] = line[1]
             for i in range(6):
                 data[i] = line[i+5]
-            csv_data[submitter_timestamp] = data
+            csv_data[timestamp] = data
 
     return csv_data
 
@@ -218,9 +219,8 @@ def load_solutions(csv_data):
         if filename.endswith(".solution"):
             parsed = filename.split('_')
             timestamp = parsed[1]
-            submitter = '_'.join(parsed[3:])[:-9]
             try:
-                data = csv_data[submitter + timestamp]
+                data = csv_data[timestamp]
             except:
                 data = {}
                 for column in TABLE_COLUMNS:
@@ -230,12 +230,11 @@ def load_solutions(csv_data):
             global sim
             global solution_key
             sim = om.Sim(PUZZLE, os.path.join(SOLUTIONS, filename))
-            solution_key = submitter + timestamp
+            solution_key = timestamp
 
             if Restriction() > 0:
                 continue
             
-            data["Submitter"] = submitter
             data["Name"] = om.Solution(os.path.join(SOLUTIONS, filename)).name.decode("utf-8")
             data["Timestamp"] = timestamp
 
