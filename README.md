@@ -3,6 +3,8 @@ om solution swapper csvreader python\
 original ahk by [panic](https://github.com/ianh)\
 python port by omgitsabist
 
+download the file and set up the metrics in any text editor
+
 F8 goes back to the next worst solution\
 F9 swaps the current solution out for the next best solution\
 F10 updates the metrics overlay\
