@@ -1,4 +1,4 @@
-# Python Version
+# Python Version (currently supported)
 om solution swapper csvreader python\
 original ahk by [panic](https://github.com/ianh)\
 python port by omgitsabist
