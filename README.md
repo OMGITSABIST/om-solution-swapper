@@ -1,3 +1,29 @@
+# Python Version
+om solution swapper csvreader python
+original ahk by panic
+python port by omgitsabist
+
+F8 goes back to the next worst solution
+F9 swaps the current solution out for the next best solution
+F10 updates the metrics overlay
+F11 repopulates past solves overlay with all non superceded solves in selection
+F12 repopulates past solves overlay with all solves in selection
+double-clicking a solution in the list will swap in that one
+
+for multiple metrics, i recommend making multiple copies of this script
+after finishing one metric, close the script for it and open the script for the next one
+
+all external libraries and files should automatically download and install
+but in case they don't you can find them here:
+
+wxpython - for gui (https://wxpython.org/index.html)
+pynput - for input detection (https://pypi.org/project/pynput/)
+om.py - omsim python package (http://critelli.technology/om.py)
+libverify - opus magnum simulator (https://github.com/ianh/omsim/releases)
+
+pynput has certain limitations on different operating systems that you can find out about here https://pynput.readthedocs.io/en/latest/limitations.html
+
+# AHK Version
 om solution swapper\
 by [panic](https://github.com/ianh)\
 with very bad edits by omgitsabist
