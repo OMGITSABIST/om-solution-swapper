@@ -1,6 +1,6 @@
 # Python Version
 om solution swapper csvreader python\
-original ahk by panic\
+original ahk by [panic](https://github.com/ianh)\
 python port by omgitsabist
 
 F8 goes back to the next worst solution\
