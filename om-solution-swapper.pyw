@@ -96,6 +96,7 @@ import shutil
 import csv
 import urllib.request
 import platform
+import traceback
 
 def error_window(content):
     app = wx.App()
@@ -421,16 +422,17 @@ def update_metadata():
         for i in seen_solutions:
             placement = table.GetItem(i, TABLE_COLUMNS.index("#")).GetText()
             submitter = table.GetItem(i, TABLE_COLUMNS.index("Submitter")).GetText()
+            superseded = table.GetItem(i, TABLE_COLUMNS.index("Superseded")).GetText()
 
             past_list = []
             if i == current_solution:
                 if i != max(seen_solutions):
                     past_list.append("> current <\n")
             else:
-                if placement == "":
+                if superseded != "":
                     past_list.append("--- " + submitter + "*\n")
                 else:
-                    past_list.append("#" + placement.ljust(3, " ") + " " + submitter + "\n")
+                    past_list.append("#" + placement.ljust(3, " ") + submitter + "\n")
 
             for line in past_list:
                 file.write(line)
@@ -627,4 +629,4 @@ if __name__ == "__main__":
         app.MainLoop()
 
     except Exception as e:
-        error_window(str(e))
+        error_window(traceback.format_exc())
