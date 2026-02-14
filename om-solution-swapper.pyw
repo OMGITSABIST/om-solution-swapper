@@ -98,6 +98,13 @@ import urllib.request
 import platform
 import traceback
 
+try:
+    import wx
+except:
+    os.system("py -m pip install wxpython")
+    os.system("python -m pip install wxpython")
+    import wx
+
 def error_window(content):
     app = wx.App()
 
@@ -120,7 +127,7 @@ try:
             url = 'https://github.com/ianh/omsim/releases/download/libverify-linux-x86_64/libverify.so'
             urllib.request.urlretrieve(url, libverify)
 except Exception as e:
-    error_window(str(e))
+    error_window(traceback.format_exc())
 
 try:
     import om
@@ -131,17 +138,7 @@ except:
         urllib.request.urlretrieve(url, filepath)
         import om
     except Exception as e:
-        error_window(str(e))
-
-try:
-    import wx
-except:
-    try:
-        os.system("py -m pip install wxpython")
-        os.system("python -m pip install wxpython")
-        import wx
-    except Exception as e:
-        error_window(str(e))
+        error_window(traceback.format_exc())
 
 try:
     import pynput
@@ -151,7 +148,7 @@ except:
         os.system("python -m pip install pynput")
         import pynput
     except Exception as e:
-        error_window(str(e))
+        error_window(traceback.format_exc())
 
 
 TABLE_COLUMNS = ["#", "Primary", "Secondary", "Tertiary", "Supplement", "Superseded", "Current", "Submitter", "Pronouns", "Name", "File Name", "Timestamp", "Error"]
